@@ -1,20 +1,54 @@
-import { useState } from "react"
+import { FormEvent, useState } from "react"
+import { useNavigate } from 'react-router-dom';
+
 import Field from "./Field";
+import Alert from "../Alert";
 
 function LoginForm() {
-  const [email, setEmail] = useState('');
+  const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+
+  const navigate = useNavigate();
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    const userExists = JSON.parse(localStorage.getItem('userinfo')!);
+
+    if([user, password].includes('')) {
+      setMessage('no se permiten campos vacios');
+      setTimeout(() => {
+        setMessage('');
+      }, 3000);
+      return;
+    }
+
+    if(user !== userExists.user) {
+      setMessage('Cuenta no encontrada. Crea una');
+      setTimeout(() => {
+        setMessage('');
+      }, 3000);
+      return;
+    }
+
+    if(user === userExists.user && password === userExists.password) {
+      navigate('/');
+    }
+  }
 
   return (
-    <form>
+    <form
+      onSubmit={handleSubmit}
+    >
+      {message ? <Alert msg={message} error={true} /> : null}
       <Field
         htmlFor='user'
         id='user'
         name='usuario'
         placeholder='nombre de usuario'
         type='text'
-        value={email}
-        onChange={setEmail}
+        value={user}
+        onChange={setUser}
       />
       <Field
         htmlFor='password'
