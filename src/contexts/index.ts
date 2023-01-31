@@ -1,3 +1,4 @@
 export type ContextAuthProps = {
-  saludo: string
+  token: string,
+  loading: boolean,
 }
