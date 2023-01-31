@@ -1,5 +1,6 @@
 import { FormEvent, useState } from "react"
 import { useNavigate } from 'react-router-dom';
+import { generarToken } from '../../helpers'
 
 import Field from "./Field";
 import Alert from "../Alert";
@@ -32,6 +33,7 @@ function LoginForm() {
     }
 
     if(user === userExists.user && password === userExists.password) {
+      localStorage.setItem('token', generarToken());
       navigate('/');
     }
   }
