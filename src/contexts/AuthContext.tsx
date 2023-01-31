@@ -8,13 +8,22 @@ interface Props {
 
 export function AuthProvider({children}:Props) {
   const [token, setToken] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const tokenLS = localStorage.getItem('token');
-    if(!tokenLS) return;
+    validateToken();
+    async function validateToken() {
+      const tokenLS = localStorage.getItem('token');
+      if(!tokenLS) {
+        setLoading(false);
+        return
+      };
+      setTimeout(() => {
+        setLoading(false);
+      }, 3000);
 
-    setToken(tokenLS);
+      setToken(tokenLS);
+    }
 
   }, []);
 
@@ -23,6 +32,7 @@ export function AuthProvider({children}:Props) {
       value={{
         token,
         loading,
+        hola: 'saludo'
       }}
     >
       {children}
