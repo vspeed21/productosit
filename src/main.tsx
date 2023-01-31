@@ -4,12 +4,13 @@ import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import { AuthProvider } from './contexts/AuthContext';
+import { ProductProvider } from './contexts/ProductContext';
 
 import AuthLayout from './layout/AuthLayout';
 import AdminLayout from './layout/AdminLayout';
 import NewProduct from './components/admin/NewProduct';
 import ProductList from './components/admin/ProductList';
-import NewFactura from './components/admin/newFactura';
+import NewFactura from './components/admin/NewFactura';
 import FacturaList from './components/admin/FacturaList';
 
 const router = createBrowserRouter([
@@ -44,7 +45,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
+      <ProductProvider>
+        <RouterProvider router={router} />
+      </ProductProvider>
     </AuthProvider>
   </React.StrictMode>,
 )
