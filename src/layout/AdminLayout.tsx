@@ -17,7 +17,7 @@ function AdminLayout() {
             <Aside/>
           </div>
 
-          <main className="md:w-2/3 lg:w-3/4">
+          <main className="md:w-2/3 lg:w-3/4 h-screen overflow-y-auto">
             <Outlet/>
           </main>
         </div>
