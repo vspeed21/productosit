@@ -1,13 +1,39 @@
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import Field from './Field'
+import Alert from '../Alert';
 
 function SignUpForm() {
   const [name, setName] = useState('');
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
 
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = (e:FormEvent) => {
+    e.preventDefault();
+
+    if([name, user, password].includes('')) {
+      setMessage('todos los campos son obligatorios');
+      setTimeout(() => {
+        setMessage('');
+      }, 3000);
+      return;
+    }
+    const newUser = {
+      name,
+      user,
+      password,
+    }
+    localStorage.setItem('userinfo', JSON.stringify(newUser));
+
+
+  }
+
   return (
-    <form>
+    <form
+      onSubmit={handleSubmit}
+    >
+      {message ? <Alert msg={message} error={true} /> : null}
       <Field
         htmlFor='name'
         id='name'
