@@ -8,4 +8,6 @@ export type ContextAuthProps = {
 export type ContextProductProps = {
   products: Product[]
   handleProduct: (producto: Product) => void
+  setProductObj: (producto: Product) => void
+  handleDelete: (id: string) => void
 }

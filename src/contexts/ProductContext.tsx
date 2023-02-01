@@ -11,6 +11,7 @@ export function ProductProvider({children}:Props) {
   const [products, setProducts] = useState<Product[]>(
     localStorage.getItem('productsit') ? JSON.parse(localStorage.getItem('productsit')!) : []
   );
+  const [productObj, setProductObj] = useState<Partial<Product>>({});
 
   useEffect(() => {
     localStorage.setItem('productsit', JSON.stringify(products) ?? []);
@@ -21,11 +22,17 @@ export function ProductProvider({children}:Props) {
     setProducts([producto, ...products])
   }
 
+  const handleDelete = (id: string) => {
+    console.log('deleting', id);
+  }
+
   return (
     <ProdcutContext.Provider
       value={{
         products,
         handleProduct,
+        setProductObj,
+        handleDelete,
       }}
     >
       {children}
