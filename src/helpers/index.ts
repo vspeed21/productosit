@@ -3,3 +3,9 @@ export function generarToken() {
   const fecha = Date.now().toString(36);
   return random + fecha;
 }
+
+export function generarRandomNames():string {
+  const names = ['Victor Torres', 'Roxana Martinez', 'Hector Valdez', 'Cecil Perez'];
+  const randomIndex = Math.floor(Math.random() * names.length);
+  return names[randomIndex];
+}
