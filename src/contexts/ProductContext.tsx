@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from 'react'
+import { Product } from '../interfaces';
 
 const ProdcutContext = createContext({});
 
@@ -7,10 +8,18 @@ interface Props {
 }
 
 export function ProductProvider({children}:Props) {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  const handleProduct = (producto: Product) => {
+    producto.id = crypto.randomUUID();
+    setProducts([producto, ...products])
+  }
 
   return (
     <ProdcutContext.Provider
       value={{
+        products,
+        handleProduct,
       }}
     >
       {children}
