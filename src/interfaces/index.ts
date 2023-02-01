@@ -1,5 +1,5 @@
 export interface Product {
-  id: string | number
+  id?: string
   name: string
   price: string
   stock: string
