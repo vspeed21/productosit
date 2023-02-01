@@ -9,3 +9,10 @@ export function generarRandomNames():string {
   const randomIndex = Math.floor(Math.random() * names.length);
   return names[randomIndex];
 }
+
+export function formatearCantidad(cantidad: string) {
+  return new Intl.NumberFormat('es-HN', {
+    style: 'currency',
+    currency: 'HNL',
+  }).format(Number(cantidad));
+}
