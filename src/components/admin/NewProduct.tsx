@@ -1,4 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+
 import Alert from '../Alert';
 import Field from '../forms/Field'
 import useProduct from '../../hooks/useProduct';
@@ -17,6 +19,7 @@ function NewProduct() {
   });
 
   const { handleProduct } = useProduct();
+  const navigate = useNavigate();
 
   const regex = /^[+0-9]*$/;
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -63,6 +66,19 @@ function NewProduct() {
     }
 
     handleProduct({name, price, stock});
+    setName('');
+    setPrice('');
+    setStock('');
+
+    setAlerta({
+      msg: 'Producto agregado correctamente',
+      error: false,
+    });
+
+    setTimeout(() => {
+      navigate('/admin/ver-productos');
+    }, 2000);
+
   }
 
   return (
