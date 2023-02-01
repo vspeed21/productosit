@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from 'react'
 import Alert from '../Alert';
 import Field from '../forms/Field'
+import useProduct from '../../hooks/useProduct';
 
 function NewProduct() {
   const [name, setName] = useState('');
@@ -14,6 +15,8 @@ function NewProduct() {
     msg: '',
     error: false,
   });
+
+  const { handleProduct } = useProduct();
 
   const regex = /^[+0-9]*$/;
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +35,35 @@ function NewProduct() {
     setValidStock(false);
   }
 
-  
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    if([name, price, stock].includes('')) {
+      setAlerta({
+        msg: 'No se permiten campos vacios',
+        error: true,
+      });
+      return;
+    }
+
+    if(!regex.test(price)) {
+      setAlerta({
+        msg: 'No se permiten ingresar letras',
+        error: true
+      });
+      return;
+    }
+
+    if(!regex.test(stock)) {
+      setAlerta({
+        msg: 'No se permiten ingresar letras',
+        error: true
+      });
+      return;
+    }
+
+    handleProduct({name, price, stock});
+  }
 
   return (
     <div className='md:pt-5'>
@@ -42,6 +73,7 @@ function NewProduct() {
       <p className='text-center md:text-start mt-4'>Llena el formulario para agregar nuevo producto</p>
 
       <form
+        onSubmit={handleSubmit}
         className='bg-white p-4 rounded shadow md:w-2/3 mx-5 mt-10 md:mx-auto'
       >
         {alerta.msg ? <Alert msg={alerta.msg} error={alerta.error} /> : null}
