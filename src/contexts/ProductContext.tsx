@@ -18,12 +18,24 @@ export function ProductProvider({children}:Props) {
   }, [products]);
 
   const handleProduct = (producto: Product) => {
-    producto.id = crypto.randomUUID();
-    setProducts([producto, ...products])
+    if(producto.id) {
+      const updateProducts = products.map( pro => pro.id === producto.id ? producto : pro);
+      setProducts(updateProducts);
+      setProductObj({});
+    }else {
+      producto.id = crypto.randomUUID();
+      setProducts([producto, ...products]);
+      setProductObj({});
+    }
   }
 
   const handleDelete = (id: string) => {
-    console.log('deleting', id);
+    const rpta = confirm('¿Desea eliminar este producto?')
+
+    if(rpta) {
+      const updateProducts = products.filter(pro => pro.id !== id);
+      setProducts(updateProducts);
+    }
   }
 
   return (
@@ -31,6 +43,7 @@ export function ProductProvider({children}:Props) {
       value={{
         products,
         handleProduct,
+        productObj,
         setProductObj,
         handleDelete,
       }}

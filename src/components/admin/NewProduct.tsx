@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 import Alert from '../Alert';
@@ -9,6 +9,7 @@ function NewProduct() {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [stock, setStock] = useState('');
+  const [id, setId] = useState('');
 
   const [validPrice, setValidPrice] = useState(false);
   const [validStock, setValidStock] = useState(false);
@@ -18,7 +19,16 @@ function NewProduct() {
     error: false,
   });
 
-  const { handleProduct } = useProduct();
+  const { handleProduct, productObj } = useProduct();
+  useEffect(() => {
+    if(productObj?.name) {
+      setName(productObj.name);
+      setPrice(productObj.price);
+      setStock(productObj.stock);
+      setId(productObj?.id!);
+    }
+  }, [productObj])
+
   const navigate = useNavigate();
 
   const regex = /^[+0-9]*$/;
@@ -65,7 +75,7 @@ function NewProduct() {
       return;
     }
 
-    handleProduct({name, price, stock});
+    handleProduct({name, price, stock, id});
     setName('');
     setPrice('');
     setStock('');
@@ -86,7 +96,9 @@ function NewProduct() {
       <h2 className='text-xl uppercase text-center md:text-start font-bold'>
         Ingresar productos
       </h2>
-      <p className='text-center md:text-start mt-4'>Llena el formulario para agregar nuevo producto</p>
+      <p className='text-center md:text-start mt-4'>
+        {productObj?.name ? 'Edita los campos para editar este producto' : 'Llena el formulario para agregar nuevo producto'}
+      </p>
 
       <form
         onSubmit={handleSubmit}
@@ -129,7 +141,7 @@ function NewProduct() {
         <div className='flex justify-center md:justify-end'>
         <input
           type='submit'
-          value='Agregar'
+          value={productObj?.name ? 'guardar cambios' : 'Agregar'}
           className='bg-sky-600 py-1 px-3 rounded text-white font-bold uppercase hover:cursor-pointer hover:bg-sky-800 transition-colors duration-300 w-full md:w-auto'
         />
       </div>
