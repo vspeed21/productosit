@@ -8,7 +8,13 @@ interface Props {
 }
 
 export function ProductProvider({children}:Props) {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>(
+    localStorage.getItem('productsit') ? JSON.parse(localStorage.getItem('productsit')!) : []
+  );
+
+  useEffect(() => {
+    localStorage.setItem('productsit', JSON.stringify(products) ?? []);
+  }, [products]);
 
   const handleProduct = (producto: Product) => {
     producto.id = crypto.randomUUID();
