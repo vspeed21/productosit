@@ -12,3 +12,7 @@ export type ContextProductProps = {
   setProductObj: (producto: Product) => void
   handleDelete: (id: string) => void
 }
+
+export type ContextFacturaProps = {
+  saludo: string
+}
