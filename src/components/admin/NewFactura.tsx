@@ -1,10 +1,8 @@
-import { FormEvent, useState, useEffect, ChangeEvent } from 'react';
+import { FormEvent, useState, useEffect } from 'react';
 
 import Field from '../forms/Field';
 import useProduct from '../../hooks/useProduct';
 import { formatearCantidad } from '../../helpers';
-import ProductsFactura from '../ProductsFactura';
-import { Product } from '../../interfaces';
 import Cantidad from './Cantidad';
 import ProductFactura from './ProductFactura';
 
