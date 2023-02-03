@@ -12,6 +12,7 @@ export interface Numeros {
 }
 
 export interface Factura {
+  numeroFactura?: number
   client: string
   factura: string
   productoFactura: any
