@@ -5,6 +5,8 @@ import useProduct from '../../hooks/useProduct';
 import { formatearCantidad } from '../../helpers';
 import ProductsFactura from '../ProductsFactura';
 import { Product } from '../../interfaces';
+import Cantidad from './Cantidad';
+import ProductFactura from './ProductFactura';
 
 
 function NewFactura() {
@@ -102,80 +104,56 @@ function NewFactura() {
               onChange={e => setFactura(e.target.value)}
             >
               <option value=''>--Seleccione--</option>
-              <option value='contaco'>Contado</option>
+              <option value='contado'>Contado</option>
               <option value='credito'>Credito</option>
             </select>
           </div>
         </div>
 
-        <button onClick={addProductF} type='button'>Add</button>
-
-
         <div className='flex flex-col gap-3'>
-          <label className='text-gray-800 uppercase font-bold'>
-            Buscar productos
-          </label>
+          <div className='flex gap-5 items-center'>
+            <label className='text-gray-800 uppercase font-bold'>
+              Buscardor productos
+            </label>
+            {buscadorPro && (
+                <button
+                type='button'
+                className='capitalize py-1 px-2 border-2 border-blue-500 rounded hover:bg-blue-600 hover:text-white transition-colors'
+                onClick={addProductF}
+              >
+                agregar producto
+              </button>
+            )}
+          </div>
           <input
             list='productos'
             type='list'
             name='name'
             value={buscadorPro}
+            placeholder='Buscar productos...'
             onChange={e => setbuscadorPro(e.target.value)}
             className='bg-gray-100 p-1 pl-3 outline-none focus:outline-blue-600 focus:outline-2 rounded focus:shadow border border-gray-400 focus:border-none'
           />
 
           {productoEncontrado[0]?.price && (
             <div className='flex gap-3 justify-evenly my-3'>
-              <p className='border-b-2 border-blue-500'>Cantidad disponible: {productoEncontrado[0]?.stock}</p>
-              <p className='border-b-2 border-blue-500'>Precio: {formatearCantidad(productoEncontrado[0]?.price)}</p>
+              <p>
+                Cantidad disponible: {''}
+                <span className='font-bold'>{productoEncontrado[0]?.stock}</span>
+              </p>
+              <p>
+                Precio: {''}
+                <span className='font-bold'>{formatearCantidad(productoEncontrado[0]?.price)}</span>
+              </p>
             </div>
           )}
 
-          <div className='flex mb-4 gap-5 justify-center'>
-            <button
-              type='button'
-              className='-mt-5'
-              onClick={() => {
-                if (cantidad <= 1) return;
-                if (cantidad > 1) {
-                  setCantidad(cantidad - 1)
-                }
-              }}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-
-            </button>
-            <div className='flex flex-col gap-3'>
-
-              <input
-                id='cantidad'
-                type='number'
-                name='stock'
-                value={cantidad}
-                disabled={!buscadorPro ? true : false}
-                onChange={e => setCantidad(Number(e.target.value))}
-                min={1}
-                className='bg-gray-100 p-1 pl-3 outline-none focus:outline-blue-600 focus:outline-2 rounded focus:shadow border border-gray-400 focus:border-none text-center w-30'
-              />
-            </div>
-            <button
-              type='button'
-              className='-mt-5'
-              onClick={() => {
-                if (cantidad >= Number(productoEncontrado[0].stock) ) return;
-                if (cantidad >= 1) {
-                  setCantidad(cantidad + 1)
-                }
-              }}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-
-            </button>
-          </div>
+          <Cantidad
+            cantidad={cantidad}
+            buscadorPro={buscadorPro}
+            productoEncontrado={productoEncontrado}
+            setCantidad={setCantidad}
+          />
 
           <datalist
             id='productos'
@@ -202,17 +180,11 @@ function NewFactura() {
 
             <tbody>
               {productoFactura.length >= 1 && productoFactura.map((input, i) => (
-                <tr className='border-b hover:bg-gray-100 text-center' key={input.id}>
-                  {input.name !== '' && <td className='p-3'>{input.name}</td>}
-                  {input.name !== '' && (
-                    <td className='p-3'>{formatearCantidad(input.price)}</td>
-                  )}
-                  {input.name !== '' && (
-                    <td className='p-3'>
-                      {input.cantidadP}
-                    </td>)}
-                  {input.name !== '' && <button type='button' onClick={() => removeProFactura(i)}>eliminar</button>}
-                </tr>
+                <ProductFactura
+                  key={input.id}
+                  input={input}
+                  removeProFactura={() => removeProFactura(i)}
+                />
               ))}
             </tbody>
           </table>
