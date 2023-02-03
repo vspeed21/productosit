@@ -15,4 +15,8 @@ export type ContextProductProps = {
 
 export type ContextFacturaProps = {
   handleFactura: (value: Factura) => void
+  facturas: Factura[]
+  facturasFiltradas: Factura[]
+  filtroName: string
+  setFiltroName: (value: string) => void
 }

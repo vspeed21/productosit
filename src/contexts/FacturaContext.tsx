@@ -8,13 +8,21 @@ interface Props {
 }
 
 export function FacturaProvider({children}: Props) {
-  const [facturas, setFacturas] = useState(
+  const [facturas, setFacturas] = useState<Factura[]>(
     localStorage.getItem('facturas') ? JSON.parse(localStorage.getItem('facturas')!) : []
   );
+  const [facturasFiltradas, setFacturasFiltradas] = useState<Factura[]>([]);
+
+  const [filtroName, setFiltroName] = useState('');
 
   useEffect(() => {
     localStorage.setItem('facturas', JSON.stringify(facturas) ?? []);
   }, [facturas]);
+
+  useEffect(() => {
+    const facturasF = facturas.filter(fact => fact.client.toLowerCase() === filtroName.toLowerCase());
+    setFacturasFiltradas(facturasF);
+  }, [filtroName]);
 
   const handleFactura = (factura:Factura) => {
     setFacturas([
@@ -27,6 +35,10 @@ export function FacturaProvider({children}: Props) {
     <FacturaContext.Provider
       value={{
         handleFactura,
+        facturas,
+        filtroName,
+        setFiltroName,
+        facturasFiltradas
       }}
     >
       {children}
