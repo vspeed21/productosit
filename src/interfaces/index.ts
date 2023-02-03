@@ -16,4 +16,5 @@ export interface Factura {
   factura: string
   productoFactura: any
   numeros: Numeros
+  fecha: number
 }
