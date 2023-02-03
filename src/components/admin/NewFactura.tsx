@@ -5,7 +5,8 @@ import useProduct from '../../hooks/useProduct';
 import { formatearCantidad } from '../../helpers';
 import Cantidad from './Cantidad';
 import ProductFactura from './ProductFactura';
-
+import useFactura from '../../hooks/useFactura';
+import Alert from '../Alert';
 
 function NewFactura() {
   const [client, setClient] = useState('');
@@ -22,7 +23,13 @@ function NewFactura() {
 
   const [cantidad, setCantidad] = useState(1);
 
+  const [alerta, setAlerta] = useState({
+    msg: '',
+    error: false,
+  });
+
   const { products } = useProduct();
+  const { handleFactura } = useFactura();
 
   useEffect(() => {
     setImpuesto(subtotal * 0.15);
@@ -61,6 +68,61 @@ function NewFactura() {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+
+    if(client === '') {
+      setAlerta({
+        msg: 'El nombre del cliente es obligatorio',
+        error: true
+      });
+      setTimeout(() => {
+        setAlerta({
+          msg: '',
+          error: false,
+        })
+      }, 2000);
+      return;
+    }
+
+    if(factura === '') {
+      setAlerta({
+        msg: 'El tipo de factura es obligatorio',
+        error: true
+      });
+      setTimeout(() => {
+        setAlerta({
+          msg: '',
+          error: false,
+        })
+      }, 2000);
+      return;
+    }
+
+    if(productoFactura.length <= 1) {
+      setAlerta({
+        msg: 'Agrega productos para generar factura',
+        error: true
+      });
+      setTimeout(() => {
+        setAlerta({
+          msg: '',
+          error: false,
+        })
+      }, 2000);
+      return;
+    }
+
+    handleFactura({
+      client,
+      factura,
+      numeros: {subtotal, impuesto, totalPagar},
+      productoFactura
+    });
+
+    setClient('');
+    setFactura('');
+    setproductoFactura([
+      { id: Date.now(), name: '', price: '', stock: 1, cantidadP: 0 },
+    ]);
   }
 
   return (
@@ -76,6 +138,7 @@ function NewFactura() {
         onSubmit={handleSubmit}
         className='bg-white p-4 rounded shadow md:w-4/5 mx-5 mt-10 md:mx-auto'
       >
+        {alerta.msg && <Alert msg={alerta.msg} error={alerta.error} /> }
 
         <div className='md:flex md:items-center gap-4 justify-center'>
           <div className='md:w-1/2'>
