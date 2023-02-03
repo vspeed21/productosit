@@ -1,5 +1,6 @@
 import useFactura from "../../hooks/useFactura";
 import Factura from "./Factura";
+import Filtro from "./Filtro";
 
 function FacturaList() {
 
@@ -7,13 +8,8 @@ function FacturaList() {
 
   return (
     <div className='md:pt-5'>
-      <h2 className='text-xl uppercase text-center md:text-start font-bold'>
-        {facturas.length ? 'Listado de Facturas' : 'No hay facturas para ver'}
-      </h2>
       {facturas.length > 1 ? (
-        <p className='text-center md:text-start mt-4'>
-          Filtra por nombres
-        </p>
+        <Filtro/>
       ): null}
 
       <div className="mt-5">
