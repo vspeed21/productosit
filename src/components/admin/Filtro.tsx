@@ -1,7 +1,9 @@
 import useFactura from "../../hooks/useFactura"
 
 function Filtro() {
-  const { setFiltroName, filtroName } = useFactura();
+  const { setFiltroName, filtroName, facturas, facturasFiltradas } = useFactura();
+
+  const notDuplicateNames = new Set(facturas.map(factu => factu.client)); 
 
   return (
     <form className='ml-5'>
@@ -10,14 +12,24 @@ function Filtro() {
         <label htmlFor='name' className='text-gray-800 uppercase font-bold'>
           Nombre Cliente
         </label>
-        <input
-          type='text'
+        <select
           id='name'
           value={filtroName}
           onChange={e => setFiltroName(e.target.value)}
           placeholder={'Ingresa el nombre del cliente'}
-          className='bg-gray-100 p-1 pl-3 outline-none focus:outline-blue-600 focus:outline-2 rounded focus:shadow border border-gray-400 focus:border-none w-72'
-        />
+          className='bg-gray-100 p-1 pl-3 outline-none focus:outline-blue-600 focus:outline-2 rounded focus:shadow border border-gray-400 focus:border-none hover:cursor-pointer w-72'
+        >
+          <option value='' className="text-center">{facturasFiltradas.length ? 'Todas las facturas' : '--Seleccione --'}</option>
+          {Array.from(notDuplicateNames).map((clientName, i) => (
+            <option
+              key={i}
+              value={clientName}
+              className='text-center capitalize'
+            >
+              {clientName}
+            </option>
+          ))}
+        </select>
       </div>
     </form>
   )
