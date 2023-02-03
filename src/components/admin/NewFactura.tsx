@@ -22,6 +22,10 @@ function NewFactura() {
   const [totalPagar, setTotalPagar] = useState(0);
 
   const [cantidad, setCantidad] = useState(1);
+  const [numeroFactura, setNumeroFactura] = useState(
+    localStorage.getItem('numeroFactura') ? 
+      Number(localStorage.getItem('numeroFactura')) : 1
+  );
 
   const [alerta, setAlerta] = useState({
     msg: '',
@@ -30,6 +34,10 @@ function NewFactura() {
 
   const { products } = useProduct();
   const { handleFactura } = useFactura();
+
+  useEffect(() => {
+    localStorage.setItem('numeroFactura', JSON.stringify(numeroFactura));
+  }, [numeroFactura]);
 
   useEffect(() => {
     setImpuesto(subtotal * 0.15);
@@ -112,12 +120,15 @@ function NewFactura() {
     }
 
     handleFactura({
+      numeroFactura,
       client,
       factura,
       numeros: {subtotal, impuesto, totalPagar},
-      productoFactura
+      productoFactura,
+      fecha: Date.now(),
     });
 
+    setNumeroFactura(numeroFactura + 1);
     setClient('');
     setFactura('');
     setproductoFactura([
@@ -140,6 +151,7 @@ function NewFactura() {
       >
         {alerta.msg && <Alert msg={alerta.msg} error={alerta.error} /> }
 
+        {`Numero factura: ${numeroFactura}`}
         <div className='md:flex md:items-center gap-4 justify-center'>
           <div className='md:w-1/2'>
             <Field
