@@ -1,4 +1,4 @@
-import { Product } from "../interfaces"
+import { Factura, Product } from "../interfaces"
 
 export type ContextAuthProps = {
   token: string,
@@ -14,5 +14,5 @@ export type ContextProductProps = {
 }
 
 export type ContextFacturaProps = {
-  saludo: string
+  handleFactura: (value: Factura) => void
 }
