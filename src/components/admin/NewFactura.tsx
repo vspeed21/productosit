@@ -12,21 +12,36 @@ function NewFactura() {
   const [factura, setFactura] = useState('');
   const [nombresP, setNombresP] = useState<string[]>([]);
 
-  // const [cantidadProductosF, setCantidadProductosF] = useState(3);
+
   const [inputValues, setInputValues] = useState([
-    {id: Date.now(), name: '', price: '', stock: 1},
+    { id: Date.now(), name: '', price: '', stock: 1 },
   ]);
 
   const { products } = useProduct();
-  
+
+  function findProduct() {
+    for (let i = 0; i < nombresP.length; i++) {
+      for (let j = 0; j < products.length; j++) {
+        if(nombresP[i] === products[j].name) {
+          inputValues[i].price = products[j]?.price;
+          inputValues[i].stock = Number(products[j]?.stock);
+        }
+      }
+    }
+  }
+
+  useEffect(()  => {
+    findProduct();
+  }, [inputValues]);
+
   const addInput = () => {
     setInputValues([
       ...inputValues,
-      {id: Date.now(),  name: '', price: '', stock: 1}
+      { id: Date.now(), name: '', price: '', stock: 1 }
     ]);
   }
 
-  const revomeInput = (i: number) => {
+  function revomeInput(i: number) {
     const newInputValues = [...inputValues];
     newInputValues.splice(i, 1);
     setInputValues(newInputValues);
@@ -105,8 +120,9 @@ function NewFactura() {
                     changeInput(e, i);
                     setNombresP([
                       ...nombresP,
-                      e.target.value, 
+                      e.target.value,
                     ]);
+                    findProduct();
                   }}
                   className='bg-gray-100 p-1 pl-3 outline-none focus:outline-blue-600 focus:outline-2 rounded focus:shadow border border-gray-400 focus:border-none'
                 />
@@ -128,9 +144,11 @@ function NewFactura() {
                 <input
                   type='text'
                   name='price'
-                  value={input.price || ''}
+                  value={input.price}
                   onChange={e => changeInput(e, i)}
-                  className='bg-gray-100 p-1 pl-3 outline-none focus:outline-blue-600 focus:outline-2 rounded focus:shadow border border-gray-400 focus:border-none'
+                  disabled={true}
+                  readOnly={true}
+                  className='bg-gray-100 p-1 pl-3 outline-none focus:outline-blue-600 focus:outline-2 rounded focus:shadow border border-gray-400 focus:border-none text-center'
                 />
               </div>
             </div>
@@ -146,8 +164,9 @@ function NewFactura() {
               i >= 1 && <button onClick={() => revomeInput(i)} type='button'>remove</button>
             }
           </div>
-        ))}
-        
+        )
+        )}
+
 
         <div className='flex justify-center md:justify-end'>
           <input
