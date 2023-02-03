@@ -12,6 +12,7 @@ import NewProduct from './components/admin/NewProduct';
 import ProductList from './components/admin/ProductList';
 import NewFactura from './components/admin/NewFactura';
 import FacturaList from './components/admin/FacturaList';
+import { FacturaProvider } from './contexts/FacturaContext';
 
 const router = createBrowserRouter([
   {
@@ -45,7 +46,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <AuthProvider>
     <ProductProvider>
-      <RouterProvider router={router} />
+      <FacturaProvider>
+        <RouterProvider router={router} />
+      </FacturaProvider>
     </ProductProvider>
   </AuthProvider>
 )
