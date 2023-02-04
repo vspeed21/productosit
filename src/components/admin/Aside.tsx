@@ -5,12 +5,19 @@ function Aside() {
   const location = useLocation();
   const { logOut } = useAuth();
 
+  const user = localStorage.getItem('userinfo') ? JSON.parse(localStorage.getItem('userinfo')!): {};
+
   return (
     <aside className='p-5 flex flex-col items-center border-b md:border-r-2 border-gray-400 mb-10 md:mr-10 md:mb-0 md:h-screen'>
       <h2 className='text-5xl font-bold text-center flex flex-col text-blue-700'>
         Productos
         <span className='font-black'>IT</span>
       </h2>
+
+      <h3 className='mt-5 text-xl'>
+        Bienvenido: {''}
+        <span className='font-bold'>{user.name}</span>
+      </h3>
 
       <nav className='flex flex-col gap-4 mt-10'>
         <div className='flex flex-col sm:gap-5 md:gap-4'>
