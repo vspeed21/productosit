@@ -182,6 +182,31 @@ function NewFactura() {
     setproductoFactura([
       { id: Date.now(), name: '', price: '', stock: 1, cantidadP: 0, activa: false },
     ]);
+    setAlerta({
+      msg: 'proceso finalizado',
+      error: false,
+    });
+
+    setTimeout(() => {
+      setAlerta({
+        msg: '',
+        error: false,
+      });
+    }, 300);
+  }
+
+  const handleCancelar = () => {
+    const rpta = confirm('¿Estas seguro de cancelar?')
+
+    if(rpta) {
+      setEnableInput(false);
+    setClient('');
+    setFactura('');
+    setproductoFactura([
+      { id: Date.now(), name: '', price: '', stock: 1, cantidadP: 0, activa: false },
+    ]);
+    setbuscadorPro('');
+    }
   }
 
   return (
@@ -341,7 +366,13 @@ function NewFactura() {
           </div>
         ) : null}
 
-        <div className='flex justify-center md:justify-end'>
+        <div className='flex justify-center md:justify-end gap-2'>
+          <input
+            type='button'
+            value='Cancelar'
+            className='bg-red-600 py-1 px-3 rounded text-white font-bold uppercase hover:cursor-pointer hover:bg-red-800 transition-colors duration-300 w-full md:w-auto'
+            onClick={handleCancelar}
+          />
           <input
             type='submit'
             value="Generar factura"

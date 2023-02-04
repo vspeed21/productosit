@@ -7,15 +7,24 @@ function SignUpForm() {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
 
-  const [message, setMessage] = useState('');
+  const [alerta, setAlerta] = useState({
+    msg: '',
+    error: false,
+  });
 
   const handleSubmit = (e:FormEvent) => {
     e.preventDefault();
 
     if([name, user, password].includes('')) {
-      setMessage('todos los campos son obligatorios');
+      setAlerta({
+        msg: 'todos los campos son obligatorios',
+        error: true,
+      })
       setTimeout(() => {
-        setMessage('');
+        setAlerta({
+          msg: '',
+          error: false,
+        })
       }, 3000);
       return;
     }
@@ -25,7 +34,17 @@ function SignUpForm() {
       password,
     }
     localStorage.setItem('userinfo', JSON.stringify(newUser));
+    setAlerta({
+      msg: 'cuenta creada correctamente. inicia sesion',
+      error: false,
+    })
 
+    setTimeout(() => {
+      setAlerta({
+        msg: '',
+        error: false,
+      })
+    }, 3000);
 
   }
 
@@ -33,7 +52,7 @@ function SignUpForm() {
     <form
       onSubmit={handleSubmit}
     >
-      {message ? <Alert msg={message} error={true} /> : null}
+      {alerta.msg ? <Alert msg={alerta.msg} error={alerta.error} /> : null}
       <Field
         htmlFor='name'
         id='name'
