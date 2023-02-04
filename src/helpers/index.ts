@@ -16,3 +16,13 @@ export function formatearCantidad(cantidad: string) {
     currency: 'HNL',
   }).format(Number(cantidad));
 }
+
+export function formatDate(date: number) {
+  const newDate = new Date(date);
+
+  return newDate.toLocaleDateString('es-HN', {
+    year: '2-digit',
+    month: 'numeric',
+    day: '2-digit'
+  })
+}
