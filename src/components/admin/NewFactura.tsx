@@ -274,10 +274,13 @@ function NewFactura() {
             {buscadorPro && productoEncontrado[0]?.name && (
               <button
                 type='button'
-                className='capitalize py-1 px-2 border-2 border-blue-500 rounded hover:bg-blue-600 hover:text-white transition-colors -mt-3'
+                className='capitalize py-1 px-2 rounded bg-blue-600 hover:bg-blue-800 text-white transition-colors -mt-3 flex justify-center items-center gap-1'
                 onClick={addProductF}
               >
                 agregar producto
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
               </button>
             )}
           </div>

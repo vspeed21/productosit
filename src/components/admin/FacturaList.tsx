@@ -16,12 +16,17 @@ function FacturaList() {
 
       <div className="mt-5">
         {filtroName ? (
-          facturasFiltradas.map((fact, i) => (
-            <Factura
-              key={i}
-              factura={fact}
-            />
-          ))
+          <>
+            <h2>fac</h2>
+            <p>lis</p>
+
+            {facturasFiltradas.map((fact, i) => (
+              <Factura
+                key={i}
+                factura={fact}
+              />
+            ))}
+          </>
         ) : (
           facturas.length && facturas.map((factura, i) => (
             <Factura
