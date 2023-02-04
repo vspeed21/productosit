@@ -94,10 +94,10 @@ function NewProduct() {
   return (
     <div className='md:pt-5'>
       <h2 className='text-xl uppercase text-center md:text-start font-bold'>
-        Ingresar productos
+        {productObj?.name ? 'Editar articulo' : 'Ingresar producto'}
       </h2>
       <p className='text-center md:text-start mt-4'>
-        {productObj?.name ? 'Edita los campos para editar este producto' : 'Llena el formulario para agregar nuevo producto'}
+        {productObj?.name ? 'Edita los campos para guardar este producto' : 'Completa el formulario para agregar nuevo producto al inventario'}
       </p>
 
       <form
