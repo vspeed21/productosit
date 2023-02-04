@@ -44,7 +44,7 @@ function Cantidad({cantidad, setCantidad, buscadorPro, productoEncontrado}: Prop
           type='button'
           className='mt-1'
           onClick={() => {
-            if (cantidad >= Number(productoEncontrado[0].stock)) return;
+            if (cantidad >= Number(productoEncontrado[0]?.stock)) return;
             if (cantidad >= 1) {
               setCantidad(cantidad + 1)
             }
