@@ -3,6 +3,7 @@ import { Factura, Product } from "../interfaces"
 export type ContextAuthProps = {
   token: string,
   loading: boolean,
+  logOut: () => void
 }
 
 export type ContextProductProps = {

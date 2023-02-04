@@ -25,14 +25,23 @@ export function AuthProvider({children}:Props) {
       setToken(tokenLS);
     }
 
-  }, []);
+  }, [token]);
+
+  const logOut = () => {
+    const rpta = confirm('¿Estas seguro de cerrar sesión? No se perderan los datos');
+
+    if(rpta) {
+      localStorage.removeItem('token');
+      window.location.href = '/auth';
+    }
+  }
 
   return (
     <AuthContext.Provider
       value={{
         token,
         loading,
-        hola: 'saludo'
+        logOut,
       }}
     >
       {children}
