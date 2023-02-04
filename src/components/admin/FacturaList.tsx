@@ -1,7 +1,7 @@
 import useFactura from "../../hooks/useFactura";
 import Factura from "./Factura";
 import Filtro from "./Filtro";
-import { formatearCantidad } from "../../helpers";
+import { formatearCantidad, formatDate } from "../../helpers";
 import ProFactura from "./ProFactura";
 
 function FacturaList() {
@@ -25,7 +25,7 @@ function FacturaList() {
                 </div>
                 <div className='flex flex-col border-r border-r-slate-600'>
                   <p className='mr-5 text-center font-bold'>Fecha</p>
-                  <p className='mr-5 text-center'>{fact.fecha}</p>
+                  <p className='mr-5 text-center'>{formatDate(fact.fecha)}</p>
                 </div>
 
                 <div className='flex flex-col border-r border-r-slate-600'>
