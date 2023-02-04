@@ -32,9 +32,17 @@ function LoginForm() {
       return;
     }
 
+    if(password !== userExists.password) {
+      setMessage('Contraseña incorrecta');
+      setTimeout(() => {
+        setMessage('');
+      }, 3000);
+      return;
+    }
+
     if(user === userExists.user && password === userExists.password) {
       localStorage.setItem('token', generarToken());
-      navigate('/');
+      window.location.href = '/'
     }
   }
 
