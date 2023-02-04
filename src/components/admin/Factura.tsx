@@ -1,4 +1,4 @@
-import { formatearCantidad } from '../../helpers';
+import { formatearCantidad, formatDate} from '../../helpers';
 import { Factura } from '../../interfaces'
 import ProFactura from './ProFactura';
 
@@ -18,7 +18,7 @@ function FacturaC({ factura }: Props) {
           </div>
           <div className='flex flex-col border-r border-r-slate-600'>
             <p className='mr-5 text-center font-bold'>Fecha</p>
-            <p className='mr-5 text-center'>{factura.fecha}</p>
+            <p className='mr-5 text-center'>{formatDate(factura.fecha)}</p>
           </div>
 
           <div className='flex flex-col border-r border-r-slate-600'>
