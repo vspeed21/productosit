@@ -7,6 +7,7 @@ import { formatDate, formatearCantidad } from '../../helpers';
 import Cantidad from './Cantidad';
 import ProductFactura from './ProductFactura';
 import Alert from '../Alert';
+import { Product } from '../../interfaces';
 
 function NewFactura() {
   const [client, setClient] = useState('');
@@ -16,6 +17,7 @@ function NewFactura() {
   const [productoFactura, setproductoFactura] = useState([
     { id: Date.now(), name: '', price: '', stock: 1, cantidadP: 0, activa: false },
   ]);
+  
   const [enableInput, setEnableInput] = useState(false);
   const [facturaGenerada, setFacturaGenerada] = useState(false);
 
@@ -29,7 +31,6 @@ function NewFactura() {
       Number(localStorage.getItem('numeroFactura')) : 1
   );
 
-  const [cambio, setCambio] = useState(false);
   const [alerta, setAlerta] = useState({
     msg: '',
     error: false,
@@ -79,6 +80,11 @@ function NewFactura() {
 
 
   const addProductF = () => {
+    if(cantidad === 0) {
+      alert('La cantidad no puede ser 0');
+      return;
+    }
+
     if(Number(productoEncontrado[0]?.stock) > 0) {
       let valor = cantidad;
       productoFactura.map(proF => {
@@ -97,11 +103,12 @@ function NewFactura() {
         setbuscadorPro('');
         setCantidad(1);
       } else{
-        alert('no se puede hola');
+        alert('No hay mas existencias');
+        console.log(valor);
       }
-    }else{
-      alert('no hay existencias de este producto');
-    }
+      }else{
+        alert(`No se puede agregar porque hay ${productoEncontrado[0]?.stock} existencias del articulo ${productoEncontrado[0]?.name}`);
+      }
 
 
   }
@@ -113,7 +120,6 @@ function NewFactura() {
   }
 
   const handleSubmit = (e: FormEvent) => {
-    setCambio(true);
     e.preventDefault();
 
     if(client === '') {
@@ -169,7 +175,6 @@ function NewFactura() {
     });
 
     setFacturaGenerada(true);
-    setCambio(false)
     setNumeroFactura(numeroFactura + 1);
     setClient('');
     setFactura('');
@@ -177,27 +182,6 @@ function NewFactura() {
     setproductoFactura([
       { id: Date.now(), name: '', price: '', stock: 1, cantidadP: 0, activa: false },
     ]);
-
-    
-
-    // if(!cambio) {
-      
-
-
-
-
-    //   // facturas.map(factura => {
-    //   //   factura.productoFactura.map(productoLlevado => {
-    //   //     products.map(producto => {
-    //   //       if (productoLlevado.name === producto.name) {
-    //   //         producto.stock = (Number(producto.stock) - productoLlevado.cantidadP).toString();
-    //   //         setProducts([...products]);
-    //   //       }
-    //   //     });
-    //   //   });
-    //   // });
-    // }
-
   }
 
   return (
@@ -257,20 +241,6 @@ function NewFactura() {
         </div>
 
         <div className='flex flex-col gap-3'>
-          <div className='flex gap-5 items-center'>
-            <label className='text-gray-800 uppercase font-bold'>
-              Buscardor productos
-            </label>
-            {buscadorPro && (
-                <button
-                type='button'
-                className='capitalize py-1 px-2 border-2 border-blue-500 rounded hover:bg-blue-600 hover:text-white transition-colors'
-                onClick={addProductF}
-              >
-                agregar producto
-              </button>
-            )}
-          </div>
           <input
             list='productos'
             type='list'
@@ -282,24 +252,35 @@ function NewFactura() {
           />
 
           {productoEncontrado[0]?.price && (
-            <div className='flex gap-3 justify-evenly my-3'>
+            <div className='flex gap-3 justify-evenly my-1'>
               <p>
-                Cantidad disponible: {''}
+                Disponible: {''}
                 <span className='font-bold'>{productoEncontrado[0]?.stock}</span>
               </p>
               <p>
                 Precio: {''}
                 <span className='font-bold'>{formatearCantidad(productoEncontrado[0]?.price)}</span>
               </p>
+              <Cantidad
+                cantidad={cantidad}
+                buscadorPro={buscadorPro}
+                productoEncontrado={productoEncontrado}
+                setCantidad={setCantidad}
+              />
             </div>
           )}
 
-          <Cantidad
-            cantidad={cantidad}
-            buscadorPro={buscadorPro}
-            productoEncontrado={productoEncontrado}
-            setCantidad={setCantidad}
-          />
+          <div className='flex justify-end'>
+            {buscadorPro && productoEncontrado[0]?.name && (
+              <button
+                type='button'
+                className='capitalize py-1 px-2 border-2 border-blue-500 rounded hover:bg-blue-600 hover:text-white transition-colors -mt-3'
+                onClick={addProductF}
+              >
+                agregar producto
+              </button>
+            )}
+          </div>
 
           <datalist
             id='productos'

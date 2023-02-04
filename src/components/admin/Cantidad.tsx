@@ -36,7 +36,7 @@ function Cantidad({cantidad, setCantidad, buscadorPro, productoEncontrado}: Prop
         disabled={!buscadorPro ? true : false}
         onChange={e => setCantidad(Number(e.target.value))}
         min={1}
-        className='bg-gray-100 p-1 pl-3 outline-none focus:outline-blue-600 focus:outline-2 rounded focus:shadow border border-gray-400 focus:border-none text-center w-30'
+        className='bg-gray-100 p-1 pl-3 outline-none focus:outline-blue-600 focus:outline-2 rounded focus:shadow border border-gray-400 focus:border-none text-center w-28'
       />
       
       <div>
@@ -45,7 +45,7 @@ function Cantidad({cantidad, setCantidad, buscadorPro, productoEncontrado}: Prop
           className='mt-1'
           onClick={() => {
             if (cantidad >= Number(productoEncontrado[0]?.stock)) return;
-            if (cantidad >= 1) {
+            if (cantidad >= 1 || cantidad === 0) {
               setCantidad(cantidad + 1)
             }
           }}
