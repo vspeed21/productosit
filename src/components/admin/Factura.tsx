@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { formatearCantidad, formatDate} from '../../helpers';
 import { Factura } from '../../interfaces'
 import ProFactura from './ProFactura';
@@ -7,6 +8,8 @@ interface Props {
 }
 
 function FacturaC({ factura }: Props) {
+  const [showProducts, setShowProducts] = useState(false);
+
   const { productoFactura } = factura;
 
   return (
@@ -51,7 +54,15 @@ function FacturaC({ factura }: Props) {
           </div>
         </div>
 
-        <div className='mt-5'>
+        <button
+          type='button'
+          className='my-3 underline hover:no-underline'
+          onClick={() => setShowProducts(!showProducts)}
+        >
+          {showProducts ? 'Ocultar detalle': 'Mostrar Detalle'}
+        </button>
+
+        <div className={`${showProducts ? 'block' : 'hidden'} mt-5`}>
           <p className='text-center font-bold text-xl mb-5'>Productos</p>
 
           <table className='w-full mt-10 table-auto shadow bg-white mr-5 overflow-y-scroll'>
