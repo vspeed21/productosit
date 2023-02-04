@@ -9,9 +9,10 @@ interface Props {
   value: string | number,
   onChange: (state: string) => void,
   onInput?: (e: ChangeEvent<HTMLInputElement>) => void
+  disabled?: boolean
 }
 
-function Field({ htmlFor, type, id, placeholder, value, onChange, name, onInput }:Props) {
+function Field({ htmlFor, type, id, placeholder, value, onChange, name, onInput, disabled }:Props) {
   return (
     <div className='flex flex-col gap-2 mb-4'>
       <label htmlFor={htmlFor} className='text-gray-800 uppercase font-bold'>
@@ -23,8 +24,9 @@ function Field({ htmlFor, type, id, placeholder, value, onChange, name, onInput 
         value={value}
         onChange={e => onChange(e.target.value)}
         placeholder={placeholder}
+        disabled={disabled}
         onInput={onInput}
-        className='bg-gray-100 p-1 pl-3 outline-none focus:outline-blue-600 focus:outline-2 rounded focus:shadow border border-gray-400 focus:border-none'
+        className='bg-gray-100 p-1 pl-3 outline-none focus:outline-blue-600 focus:outline-2 rounded focus:shadow border border-gray-400 focus:border-none disabled:bg-gray-300'
       />
     </div>
   )

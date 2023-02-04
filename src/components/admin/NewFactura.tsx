@@ -16,6 +16,7 @@ function NewFactura() {
   const [productoFactura, setproductoFactura] = useState([
     { id: Date.now(), name: '', price: '', stock: 1, cantidadP: 0 },
   ]);
+  const [enableInput, setEnableInput] = useState(false);
 
   const [subtotal, setSubtotal] = useState(0);
   const [impuesto, setImpuesto] = useState(0);
@@ -54,11 +55,11 @@ function NewFactura() {
 
   const productoEncontrado = products.filter(pro => pro.name === buscadorPro);
   const addProductF = () => {
-
     if (cantidad > Number(productoEncontrado[0]?.stock)) {
       alert('no se puede');
       return;
     }
+    setEnableInput(true);
 
     setproductoFactura([
       ...productoFactura,
@@ -131,6 +132,7 @@ function NewFactura() {
     setNumeroFactura(numeroFactura + 1);
     setClient('');
     setFactura('');
+    setEnableInput(false);
     setproductoFactura([
       { id: Date.now(), name: '', price: '', stock: 1, cantidadP: 0 },
     ]);
@@ -160,6 +162,7 @@ function NewFactura() {
               name='nombre'
               placeholder='Ingresa el nombre del cliente'
               type='text'
+              disabled={enableInput}
               value={client}
               onChange={setClient}
             />
@@ -172,8 +175,9 @@ function NewFactura() {
 
             <select
               id='factura'
-              className='bg-gray-100 p-1 pl-3 outline-none focus:outline-blue-600 focus:outline-2 rounded text-center focus:shadow border border-gray-400 focus:border-none mb-4 hover:cursor-pointer'
+              className='bg-gray-100 p-1 pl-3 outline-none focus:outline-blue-600 focus:outline-2 rounded text-center focus:shadow border border-gray-400 focus:border-none mb-4 hover:cursor-pointer disabled:bg-gray-300'
               value={factura}
+              disabled={enableInput}
               onChange={e => setFactura(e.target.value)}
             >
               <option value=''>--Seleccione--</option>
