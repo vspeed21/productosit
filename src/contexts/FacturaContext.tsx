@@ -35,6 +35,7 @@ export function FacturaProvider({children}: Props) {
     <FacturaContext.Provider
       value={{
         handleFactura,
+        setFacturas,
         facturas,
         filtroName,
         setFiltroName,

@@ -26,4 +26,5 @@ export interface Factura {
   productoFactura: ProductoF[]
   numeros: Numeros
   fecha: number
+  activa: boolean
 }

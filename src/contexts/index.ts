@@ -11,11 +11,13 @@ export type ContextProductProps = {
   productObj: Product
   setProductObj: (producto: Product) => void
   handleDelete: (id: string) => void
+  setProducts: (value: Product[]) => void
 }
 
 export type ContextFacturaProps = {
   handleFactura: (value: Factura) => void
   facturas: Factura[]
+  setFacturas: (value: Factura[]) => void
   facturasFiltradas: Factura[]
   filtroName: string
   setFiltroName: (value: string) => void

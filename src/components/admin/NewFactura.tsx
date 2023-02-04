@@ -1,11 +1,11 @@
 import { FormEvent, useState, useEffect } from 'react';
+import useFactura from '../../hooks/useFactura';
 
 import Field from '../forms/Field';
 import useProduct from '../../hooks/useProduct';
-import { formatearCantidad } from '../../helpers';
+import { formatDate, formatearCantidad } from '../../helpers';
 import Cantidad from './Cantidad';
 import ProductFactura from './ProductFactura';
-import useFactura from '../../hooks/useFactura';
 import Alert from '../Alert';
 
 function NewFactura() {
@@ -14,9 +14,10 @@ function NewFactura() {
   const [buscadorPro, setbuscadorPro] = useState('');
 
   const [productoFactura, setproductoFactura] = useState([
-    { id: Date.now(), name: '', price: '', stock: 1, cantidadP: 0 },
+    { id: Date.now(), name: '', price: '', stock: 1, cantidadP: 0, activa: false },
   ]);
   const [enableInput, setEnableInput] = useState(false);
+  const [facturaGenerada, setFacturaGenerada] = useState(false);
 
   const [subtotal, setSubtotal] = useState(0);
   const [impuesto, setImpuesto] = useState(0);
@@ -28,13 +29,14 @@ function NewFactura() {
       Number(localStorage.getItem('numeroFactura')) : 1
   );
 
+  const [cambio, setCambio] = useState(false);
   const [alerta, setAlerta] = useState({
     msg: '',
     error: false,
   });
 
-  const { products } = useProduct();
-  const { handleFactura } = useFactura();
+  const { products, setProducts } = useProduct();
+  const { handleFactura, facturas, setFacturas } = useFactura();
 
   useEffect(() => {
     localStorage.setItem('numeroFactura', JSON.stringify(numeroFactura));
@@ -53,20 +55,55 @@ function NewFactura() {
     setSubtotal(valor);
   }, [subtotal, productoFactura]);
 
-  const productoEncontrado = products.filter(pro => pro.name === buscadorPro);
-  const addProductF = () => {
-    if (cantidad > Number(productoEncontrado[0]?.stock)) {
-      alert('no se puede');
-      return;
+  useEffect(() => {
+    if(facturaGenerada) {
+      facturas.map(fact => {
+        if(fact.activa) {
+          products.map(pro => {
+            fact.productoFactura.map(productoLlevado => {
+              if(pro.name === productoLlevado.name) {
+                pro.stock = (Number(pro.stock) - productoLlevado.cantidadP).toString();
+              }
+            });//detalle
+          })//products
+          setProducts([...products]);
+          fact.activa = false;
+        }
+      })
+      setFacturas([...facturas]);
     }
-    setEnableInput(true);
+    setFacturaGenerada(false);
+  }, [facturaGenerada]);
 
-    setproductoFactura([
-      ...productoFactura,
-      { id: Date.now(), name: productoEncontrado[0].name, price: productoEncontrado[0].price, stock: Number(productoEncontrado[0].stock), cantidadP: cantidad }
-    ]);
-    setbuscadorPro('');
-    setCantidad(1);
+  const productoEncontrado = products.filter(pro => pro.name === buscadorPro);
+
+
+  const addProductF = () => {
+    if(Number(productoEncontrado[0]?.stock) > 0) {
+      let valor = cantidad;
+      productoFactura.map(proF => {
+        if(proF.name === productoEncontrado[0]?.name) {
+          valor = valor + proF.cantidadP;
+        }
+      })
+
+      if(Number(productoEncontrado[0]?.stock) >= valor && cantidad <= Number(productoEncontrado[0]?.stock)) {
+        setEnableInput(true);
+
+        setproductoFactura([
+          ...productoFactura,
+          { id: Date.now(), name: productoEncontrado[0].name, price: productoEncontrado[0].price, stock: Number(productoEncontrado[0].stock), cantidadP: cantidad, activa: true}
+        ]);
+        setbuscadorPro('');
+        setCantidad(1);
+      } else{
+        alert('no se puede hola');
+      }
+    }else{
+      alert('no hay existencias de este producto');
+    }
+
+
   }
 
   function removeProFactura(i: number) {
@@ -76,6 +113,7 @@ function NewFactura() {
   }
 
   const handleSubmit = (e: FormEvent) => {
+    setCambio(true);
     e.preventDefault();
 
     if(client === '') {
@@ -127,15 +165,39 @@ function NewFactura() {
       numeros: {subtotal, impuesto, totalPagar},
       productoFactura,
       fecha: Date.now(),
+      activa: true,
     });
 
+    setFacturaGenerada(true);
+    setCambio(false)
     setNumeroFactura(numeroFactura + 1);
     setClient('');
     setFactura('');
     setEnableInput(false);
     setproductoFactura([
-      { id: Date.now(), name: '', price: '', stock: 1, cantidadP: 0 },
+      { id: Date.now(), name: '', price: '', stock: 1, cantidadP: 0, activa: false },
     ]);
+
+    
+
+    // if(!cambio) {
+      
+
+
+
+
+    //   // facturas.map(factura => {
+    //   //   factura.productoFactura.map(productoLlevado => {
+    //   //     products.map(producto => {
+    //   //       if (productoLlevado.name === producto.name) {
+    //   //         producto.stock = (Number(producto.stock) - productoLlevado.cantidadP).toString();
+    //   //         setProducts([...products]);
+    //   //       }
+    //   //     });
+    //   //   });
+    //   // });
+    // }
+
   }
 
   return (
@@ -153,7 +215,14 @@ function NewFactura() {
       >
         {alerta.msg && <Alert msg={alerta.msg} error={alerta.error} /> }
 
-        {`Numero factura: ${numeroFactura}`}
+        <div className='flex justify-evenly mb-4'>
+          <p>{`Numero factura: ${numeroFactura}`}</p>
+          <p>
+            Fecha: {''}
+            <span className='font-bold'>{formatDate(Date.now())}</span>
+          </p>
+        </div>
+
         <div className='md:flex md:items-center gap-4 justify-center'>
           <div className='md:w-1/2'>
             <Field

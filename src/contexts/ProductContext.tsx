@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from 'react'
 import { Product } from '../interfaces';
+import useFactura from '../hooks/useFactura';
 
 const ProdcutContext = createContext({});
 
@@ -12,6 +13,9 @@ export function ProductProvider({children}:Props) {
     localStorage.getItem('productsit') ? JSON.parse(localStorage.getItem('productsit')!) : []
   );
   const [productObj, setProductObj] = useState<Partial<Product>>({});
+  const [updating, setUpdating] = useState(false);
+
+  const { facturas } = useFactura();
 
   useEffect(() => {
     localStorage.setItem('productsit', JSON.stringify(products) ?? []);
@@ -42,6 +46,7 @@ export function ProductProvider({children}:Props) {
     <ProdcutContext.Provider
       value={{
         products,
+        setProducts,
         handleProduct,
         productObj,
         setProductObj,
