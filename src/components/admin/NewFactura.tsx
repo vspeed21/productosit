@@ -253,14 +253,16 @@ function NewFactura() {
 
           {productoEncontrado[0]?.price && (
             <div className='flex gap-3 justify-evenly my-1'>
-              <p>
-                Disponible: {''}
-                <span className='font-bold'>{productoEncontrado[0]?.stock}</span>
-              </p>
-              <p>
-                Precio: {''}
-                <span className='font-bold'>{formatearCantidad(productoEncontrado[0]?.price)}</span>
-              </p>
+              <div className='flex flex-col gap-3 md:flex-row'>
+                <p>
+                  Disponible: {''}
+                  <span className='font-bold'>{productoEncontrado[0]?.stock}</span>
+                </p>
+                <p>
+                  Precio: {''}
+                  <span className='font-bold'>{formatearCantidad(productoEncontrado[0]?.price)}</span>
+                </p>
+              </div>
               <Cantidad
                 cantidad={cantidad}
                 buscadorPro={buscadorPro}
