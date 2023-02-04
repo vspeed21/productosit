@@ -200,7 +200,7 @@ function NewFactura() {
         {alerta.msg && <Alert msg={alerta.msg} error={alerta.error} /> }
 
         <div className='flex justify-evenly mb-4'>
-          <p>{`Numero factura: ${numeroFactura}`}</p>
+          <p>{`Numero: ${numeroFactura}`}</p>
           <p>
             Fecha: {''}
             <span className='font-bold'>{formatDate(Date.now())}</span>

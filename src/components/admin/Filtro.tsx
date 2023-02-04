@@ -7,10 +7,10 @@ function Filtro() {
 
   return (
     <form className='ml-5'>
-      <h2 className='text-xl mb-5'>Filtrar Facturas</h2>
-      <div className='flex flex-col gap-2 mb-4'>
-        <label htmlFor='name' className='text-gray-800 uppercase font-bold'>
-          Nombre Cliente
+      <h2 className='text-2xl mb-5 font-bold'>Filtrar Facturas</h2>
+      <div className='flex gap-2 mb-4 items-center'>
+        <label htmlFor='name' className='text-gray-800 uppercase'>
+          Nombre Cliente: {''}
         </label>
         <select
           id='name'

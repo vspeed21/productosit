@@ -7,20 +7,23 @@ interface Props{
 
 function ProFactura({factura}: Props) {
   return (
-    <tr>
+    <tr className='flex items-center my-4 border-r-2 border-r-gray-200 last-of-type:border-r-0'>
       {factura.name !== '' && (
         <td className='p-3 text-center capitalize'>
-          {factura.name}
+          <p className='font-bold'>producto</p>
+          <p>{factura.name}</p>
         </td>
       )}
       {factura.name !== '' && (
         <td className='p-3 text-center capitalize'>
-          {formatearCantidad(factura.price)}
+          <p className='font-bold'>Precio</p>
+          <p>{formatearCantidad(factura.price)}</p>
         </td>
       )}
       {factura.name !== '' && (
         <td className='p-3 text-center capitalize'>
-          {factura.cantidadP}
+          <p className='font-bold'>Cantidad llevada</p>
+          <p>{factura.cantidadP}</p>
         </td>
       )}
     </tr>
