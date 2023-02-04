@@ -17,13 +17,16 @@ function ProductFactura({ input, removeProFactura }: Props) {
             {input.cantidadP}
           </td>)}
         {input.name !== '' && 
-        <button 
-          type='button'
-          className='bg-red-500 hover:bg-red-700 transition-colors text-white py-1 px-2 rounded mt-2'
-          onClick={removeProFactura}
-        >
-          Eliminar
-        </button>}
+        <td className='p-2'>
+          <button 
+            type='button'
+            className='bg-red-500 hover:bg-red-700 transition-colors text-white py-1 px-2 rounded mt-2'
+            onClick={removeProFactura}
+          >
+            Eliminar
+          </button>
+        </td>
+      }
       </tr>
   )
 }
